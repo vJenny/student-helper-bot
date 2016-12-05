@@ -8,7 +8,7 @@
 	</category>
 
 	<category>
-		<pattern>do</pattern>
+		<pattern>who are you</pattern>
 		<template>
 Привет, я - твой бот-помощник.
 Скажи, как тебя зовут, твой курс и группу,
@@ -17,7 +17,7 @@
 	</category>
 
 	<category>
-	<pattern>commands</pattern>
+	<pattern>what do you can</pattern>
 		<template>
 Я могу узнать Ваше расписание, 
 рассказать, чем можно подкрепиться в столовой, 
@@ -28,7 +28,7 @@
 
 	<category>
 		<pattern>
-			group *
+			my group is *
 		</pattern>
 		<template>
 Группа: <set name="group"> <star/> </set>
@@ -37,7 +37,7 @@
 
 	<category>
 		<pattern>
-			course *
+			my course in *
 		</pattern>
 		<template>
 Курс: <set name="course"> <star/> </set>
@@ -49,7 +49,7 @@
 			deanery
 		</pattern>
 		<template>
-			Рсписание деканата: | 
+			|GetDeanerySchedule| 
 		</template>
 	</category>
 
@@ -58,7 +58,7 @@
 			schedule
 		</pattern>
 		<template>
-			Расписание: |
+			|GetSchedule|
 		</template>
 	</category>
 
@@ -67,7 +67,16 @@
 			weather
 		</pattern>
 		<template>
-			Погода: :
+			|GetWeather|
 		</template>
+	</category>
 
+		<category>
+		<pattern>
+			*
+		</pattern>
+		<template>
+			Глупый бот Вас не понимать. Пните разработчика :(
+		</template>
+	</category>
 </aiml>
