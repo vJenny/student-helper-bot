@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using lab8.Functional;
 using Microsoft.Bot.Connector;
+using AIMLbot;
+using System.IO;
 
 namespace lab8.Controllers
 {
@@ -12,6 +14,21 @@ namespace lab8.Controllers
     public class MessagesController : ApiController
     {
         private StudentHelper _sh = new StudentHelper();
+        private Bot _bot = new Bot();
+        private User _user;
+
+        public MessagesController()
+        {
+            _user = new User("user", _bot);
+
+            _bot.loadSettings(
+                Path.Combine(
+                    AppDomain.CurrentDomain.BaseDirectory, "AimlData", "config", "Settings.xml"));
+
+            _bot.isAcceptingUserInput = false;
+            _bot.loadAIMLFromFiles();
+            _bot.isAcceptingUserInput = true;
+        }
 
         /// <summary>
         /// POST: api/Messages
@@ -28,6 +45,10 @@ namespace lab8.Controllers
                 var user = userData.GetProperty<StudentHelper>("profile");
                 if (user != null) _sh = user;
 
+                _bot.DefaultPredicates.updateSetting("name", _sh.Name);
+                _bot.DefaultPredicates.updateSetting("course", _sh.Course);
+                _bot.DefaultPredicates.updateSetting("group", _sh.Group);
+
                 var text = await Reply(activity.Text);
                 var reply = activity.CreateReply(text);
                 userData.SetProperty("profile", _sh);
@@ -42,50 +63,58 @@ namespace lab8.Controllers
             return response;
         }
 
+        /// <summary>
+        /// Функция предобработки сообщения бота
+        /// </summary>
+        private async Task<string> BotOutputPreprocess(string message)
+        {
+            // Обрабатывает запросы вида: 1|2|3|4|5
+            // Это могут быть текстовые сообщения или названия методов (Void -> Task<String>), 
+            // которые есть у _sh. Это не обязательно может быть StudentHelper
+            var spl = message.Split('|');
+            var outMessage = new System.Text.StringBuilder();
+
+            var t = _sh.GetType();
+            foreach (var req in spl)
+            {
+                var m = t.GetMethod(req);
+
+                if (m == null || !(m.ReturnType == typeof(Task<string>)))
+                {
+                    outMessage.Append(req + " ");
+                }
+                else
+                {
+                    var resp = m.Invoke(_sh, null) as Task<string>;
+                    var s = await resp;
+                    outMessage.Append(s + " ");
+                }
+            }
+
+            return outMessage.ToString();
+        }
+
         private async Task<string> Reply(string msg)
         {
-            var a = msg.ToLower().Split(' ');
-            if (a.IsPresent("помоги") || a.IsPresent("делать"))
-                return @"Привет, я - твой бот-помощник.
-                         Скажи, как тебя зовут, твой курс и группу,
-                         тогда я смогу быть тебе полезным :)";
-            if (a.IsPresent("команды") || a.IsPresent("умеешь"))
-                return @"Я могу узнать Ваше расписание, 
-                    рассказать, чем можно подкрепиться в столовой, 
-                    подсказать часы работы деканата, 
-                    узнать для Вас погоду.";
-            if (a.IsPresent("привет") || a.IsPresent("здравствуй"))
-                return $"Привет, " + _sh.Name;
-            if (a.IsPresent("зовут")) 
+            try
             {
-                _sh.Name = a.NextTo("зовут");
-                return "Приятно познакомиться, " + _sh.Name;
+                var req = new Request(msg, _user, _bot);
+                var resp = _bot.Chat(req);
+
+                _sh.Name = _bot.GlobalSettings.grabSetting("name");
+                _sh.Group = _bot.GlobalSettings.grabSetting("group");
+                _sh.Course = _bot.GlobalSettings.grabSetting("course");
+
+                var res = await BotOutputPreprocess(resp.Output);
+
+                return res;
             }
-            if (a.IsPresent("имя"))
+            catch(Exception e)
             {
-                _sh.Name = a.NextTo("имя");
-                return "Приятно познакомиться, " + _sh.Name;
+#if DEBUG
+                return e.Message;
+#endif
             }
-            if (a.IsPresent("дела")) return "Отлично! Я же бот.";
-            if (a.IsPresent("групп"))
-            {
-                _sh.Group = a.NextTo("групп");
-                return "Окей!";
-            }
-            if (a.IsPresent("курс"))
-            {
-                _sh.Course = a.NextTo("курс");
-                return "Окей!";
-            }
-            if (a.IsPresent("деканат"))
-                return DeansOffice.WhatSchedule(DateTime.Now.DayOfWeek);
-            if (a.IsPresent("столов") || a.IsPresent("кушать") || a.IsPresent("голод"))
-                return DiningHall.WhatToEat(DateTime.Now.DayOfWeek);
-            if (a.IsPresent("пары") || a.IsPresent("расписание"))
-                return Schedule.WhatSchedule(DateTime.Now.DayOfWeek, _sh.Group, _sh.Course);
-            if (a.IsPresent("идти") || a.IsPresent("погода") || a.IsPresent("спать") || a.IsPresent("никуда"))
-                return await _sh.BuildResult();
-            return $"Глупый бот Вас не понимать. Пните разработчика :(";
         }
 
         private Activity HandleSystemMessage(Activity message)

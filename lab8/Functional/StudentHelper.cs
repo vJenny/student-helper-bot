@@ -17,7 +17,17 @@ namespace lab8.Functional
             Group = Course = "0";
         }
 
-        public async Task<string> BuildResult()
+        public async Task<string> GetSchedule()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<String> GetDeanerySchedule()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<string> GetWeather()
         {
             var owm = new WeatherClient("522ea52cffe0c78955e0e319e1572a7b");
             var res = await owm.Forecast("rostov-on-don");

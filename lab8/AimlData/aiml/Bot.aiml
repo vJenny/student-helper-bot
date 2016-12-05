@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<aiml>
+	<category>
+		<pattern>my name is *</pattern>
+		<template>
+			Приятно познакомиться, <set name="name"> <star/> </set>.
+		</template>
+	</category>
+
+	<category>
+		<pattern>do</pattern>
+		<template>
+Привет, я - твой бот-помощник.
+Скажи, как тебя зовут, твой курс и группу,
+тогда я смогу быть тебе полезным :)
+		</template>
+	</category>
+
+	<category>
+	<pattern>commands</pattern>
+		<template>
+Я могу узнать Ваше расписание, 
+рассказать, чем можно подкрепиться в столовой, 
+подсказать часы работы деканата, 
+узнать для Вас погоду.
+		</template>
+	</category>
+
+	<category>
+		<pattern>
+			group *
+		</pattern>
+		<template>
+Группа: <set name="group"> <star/> </set>
+		</template>
+	</category>
+
+	<category>
+		<pattern>
+			course *
+		</pattern>
+		<template>
+Курс: <set name="course"> <star/> </set>
+		</template>
+	</category>
+
+	<category>
+		<pattern>
+			deanery
+		</pattern>
+		<template>
+			Рсписание деканата: | 
+		</template>
+	</category>
+
+	<category>
+		<pattern>
+			schedule
+		</pattern>
+		<template>
+			Расписание: |
+		</template>
+	</category>
+
+	<category>
+		<pattern>
+			weather
+		</pattern>
+		<template>
+			Погода: :
+		</template>
+
+</aiml>
