@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using lab8.Functional;
+using lab8.Properties;
 using Microsoft.Bot.Connector;
 
 namespace lab8.Controllers
@@ -11,7 +13,8 @@ namespace lab8.Controllers
     [BotAuthentication]
     public class MessagesController : ApiController
     {
-        private StudentHelper _sh = new StudentHelper();
+        private static StudentHelper _sh = new StudentHelper();
+        private delegate Task<string> BotTask();
 
         /// <summary>
         /// POST: api/Messages
@@ -28,7 +31,7 @@ namespace lab8.Controllers
                 var user = userData.GetProperty<StudentHelper>("profile");
                 if (user != null) _sh = user;
 
-                var text = await Reply(activity.Text);
+                var text = await Reply(activity.Text, _sh);
                 var reply = activity.CreateReply(text);
                 userData.SetProperty("profile", _sh);
                 await state.BotState.SetUserDataAsync(activity.ChannelId, activity.From.Id, userData);
@@ -42,50 +45,46 @@ namespace lab8.Controllers
             return response;
         }
 
-        private async Task<string> Reply(string msg)
+        private static readonly Dictionary<string, BotTask> Commands = new Dictionary<string, BotTask>
+        {
+            { "помоги", _sh.Greeting },
+            { "делать", _sh.Greeting },
+            { "команды", _sh.Help },
+            { "умеешь", _sh.Help },
+            { "привет", _sh.Hello },
+            { "здравствуй", _sh.Hello },
+            { "здоров", _sh.Hello },
+            { "декан", _sh.GetDeansOfficeSchedule },
+            { "столов", _sh.GetDiningHallMenu },
+            { "кушать", _sh.GetDiningHallMenu },
+            { "голод",  _sh.GetDiningHallMenu },
+            { "жрать", _sh.GetDiningHallMenu },
+            { "есть", _sh.GetDiningHallMenu },
+            { "пары", _sh.GetSchedule },
+            { "расписание", _sh.GetSchedule },
+            { "идти",  _sh.GetWeather },
+            { "погода",  _sh.GetWeather },
+            { "спать",  _sh.GetWeather },
+            { "никуда",  _sh.GetWeather },
+            { "дела", _sh.HowAreYou }
+        };
+
+        public async Task<string> Reply(string msg, StudentHelper sh)
         {
             var a = msg.ToLower().Split(' ');
-            if (a.IsPresent("помоги") || a.IsPresent("делать"))
-                return @"Привет, я - твой бот-помощник.
-                         Скажи, как тебя зовут, твой курс и группу,
-                         тогда я смогу быть тебе полезным :)";
-            if (a.IsPresent("команды") || a.IsPresent("умеешь"))
-                return @"Я могу узнать Ваше расписание, 
-                    рассказать, чем можно подкрепиться в столовой, 
-                    подсказать часы работы деканата, 
-                    узнать для Вас погоду.";
-            if (a.IsPresent("привет") || a.IsPresent("здравствуй"))
-                return $"Привет, " + _sh.Name;
-            if (a.IsPresent("зовут")) 
-            {
-                _sh.Name = a.NextTo("зовут");
-                return "Приятно познакомиться, " + _sh.Name;
-            }
+
+            if (a.IsPresent("зовут"))
+                return sh.SetName(a.NextTo("зовут"));
             if (a.IsPresent("имя"))
-            {
-                _sh.Name = a.NextTo("имя");
-                return "Приятно познакомиться, " + _sh.Name;
-            }
-            if (a.IsPresent("дела")) return "Отлично! Я же бот.";
+                return sh.SetName(a.NextTo("имя"));
             if (a.IsPresent("групп"))
-            {
-                _sh.Group = a.NextTo("групп");
-                return "Окей!";
-            }
+                return sh.SetGroup(a.PrevTo("групп"));
             if (a.IsPresent("курс"))
-            {
-                _sh.Course = a.NextTo("курс");
-                return "Окей!";
-            }
-            if (a.IsPresent("деканат"))
-                return DeansOffice.WhatSchedule(DateTime.Now.DayOfWeek);
-            if (a.IsPresent("столов") || a.IsPresent("кушать") || a.IsPresent("голод"))
-                return DiningHall.WhatToEat(DateTime.Now.DayOfWeek);
-            if (a.IsPresent("пары") || a.IsPresent("расписание"))
-                return Schedule.WhatSchedule(DateTime.Now.DayOfWeek, _sh.Group, _sh.Course);
-            if (a.IsPresent("идти") || a.IsPresent("погода") || a.IsPresent("спать") || a.IsPresent("никуда"))
-                return await _sh.BuildResult();
-            return $"Глупый бот Вас не понимать. Пните разработчика :(";
+                return sh.SetCourse(a.PrevTo("курс"));
+            foreach (var cmd in Commands)
+                if (a.IsPresent(cmd.Key))
+                    return await cmd.Value.Invoke();
+            return Resources.errorMsg;
         }
 
         private Activity HandleSystemMessage(Activity message)
