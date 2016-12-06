@@ -14,7 +14,7 @@ namespace lab8.Controllers
     [BotAuthentication]
     public class MessagesController : ApiController
     {
-        private static StudentHelper _sh = new StudentHelper();
+        //private static StudentHelper _sh = new StudentHelper();
         private delegate Task<string> BotTask();
 
         /// <summary>
@@ -29,12 +29,14 @@ namespace lab8.Controllers
                 var state = activity.GetStateClient();
                 var userData = await state.BotState.GetUserDataAsync(activity.ChannelId, activity.From.Id);
 
-                var user = userData.GetProperty<StudentHelper>("profile");
-                if (user != null) _sh = user;
+                var profile = $"profile{activity.Conversation.Id}";
 
-                var text = await Reply(activity.Text);
+                var user = userData.GetProperty<StudentHelper>(profile) ?? new StudentHelper();
+                //if (user != null) _sh = user;
+
+                var text = await Reply(activity.Text, user);
                 var reply = activity.CreateReply(text);
-                userData.SetProperty("profile", _sh);
+                userData.SetProperty(profile, user);
                 await state.BotState.SetUserDataAsync(activity.ChannelId, activity.From.Id, userData);
                 await connector.Conversations.ReplyToActivityAsync(reply);
             }
@@ -46,7 +48,7 @@ namespace lab8.Controllers
             return response;
         }
 
-        private static Dictionary<string, BotTask> Commands => new Dictionary<string, BotTask>
+        private static Dictionary<string, BotTask> Commands(StudentHelper _sh) => new Dictionary<string, BotTask>
         {
             { "помоги", _sh.Greeting },
             { "делать", _sh.Greeting },
@@ -70,7 +72,7 @@ namespace lab8.Controllers
             { "дела", _sh.HowAreYou }
         };
 
-        public async Task<string> Reply(string msg)
+        public async Task<string> Reply(string msg, StudentHelper _sh)
         {
             var a = msg.ToLower().Split(' ');
 
@@ -84,7 +86,8 @@ namespace lab8.Controllers
                 return _sh.SetCourse(a.PrevTo("курс"));
             if (a.IsPresent("препод"))
                 return await _sh.GetLecturerSchedule(a.TakeName("препод"));
-            foreach (var cmd in Commands)
+            var commands = Commands(_sh);
+            foreach (var cmd in commands)
                 if (a.IsPresent(cmd.Key))
                     return await cmd.Value.Invoke();
             return Resources.errorMsg;
