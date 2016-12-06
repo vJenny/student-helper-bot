@@ -29,12 +29,12 @@ namespace lab8.Controllers
                 var state = activity.GetStateClient();
                 var userData = await state.BotState.GetUserDataAsync(activity.ChannelId, activity.From.Id);
 
-                var user = userData.GetProperty<StudentHelper>("profile");
+                var user = userData.GetProperty<StudentHelper>($"profile{activity.Id}");
                 if (user != null) _sh = user;
 
                 var text = await Reply(activity.Text);
                 var reply = activity.CreateReply(text);
-                userData.SetProperty("profile", _sh);
+                userData.SetProperty($"profile{activity.Id}", _sh);
                 await state.BotState.SetUserDataAsync(activity.ChannelId, activity.From.Id, userData);
                 await connector.Conversations.ReplyToActivityAsync(reply);
             }
