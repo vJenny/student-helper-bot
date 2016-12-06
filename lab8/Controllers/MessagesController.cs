@@ -14,7 +14,7 @@ namespace lab8.Controllers
     [BotAuthentication]
     public class MessagesController : ApiController
     {
-        private static StudentHelper _sh = new StudentHelper();
+        //private static StudentHelper _sh = new StudentHelper();
         private delegate Task<string> BotTask();
 
         /// <summary>
@@ -32,11 +32,11 @@ namespace lab8.Controllers
                 var profile = $"profile{activity.Conversation.Id}";
 
                 var user = userData.GetProperty<StudentHelper>(profile);
-                if (user != null) _sh = user;
+                //if (user != null) _sh = user;
 
                 var text = await Reply(activity.Text, user);
                 var reply = activity.CreateReply(text);
-                userData.SetProperty(profile, _sh);
+                userData.SetProperty(profile, user);
                 await state.BotState.SetUserDataAsync(activity.ChannelId, activity.From.Id, userData);
                 await connector.Conversations.ReplyToActivityAsync(reply);
             }
