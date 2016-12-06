@@ -31,7 +31,7 @@ namespace lab8.Controllers
 
                 var profile = $"profile{activity.Conversation.Id}";
 
-                var user = userData.GetProperty<StudentHelper>(profile);
+                var user = userData.GetProperty<StudentHelper>(profile) ?? new StudentHelper();
                 //if (user != null) _sh = user;
 
                 var text = await Reply(activity.Text, user);
