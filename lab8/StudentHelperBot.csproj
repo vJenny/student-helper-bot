@@ -125,6 +125,7 @@
     <Compile Include="Functional\OpenWeatherMap\WeatherClient.cs" />
     <Compile Include="Functional\OpenWeatherMap\WeatherRecord.cs" />
     <Compile Include="Functional\OpenWeatherMap\Schedule.cs" />
+    <Compile Include="Functional\ScheduleMMCS\ScheduleClient.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -146,9 +147,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Functional\ScheduleMMCS\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

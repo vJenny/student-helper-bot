@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Text;
 using System.Threading.Tasks;
+using Chronic;
 using lab8.Functional.OpenWeatherMap;
+using lab8.Functional.ScheduleMMCS;
 using lab8.Properties;
 
 namespace lab8.Functional
@@ -53,7 +55,16 @@ namespace lab8.Functional
 
         public async Task<string> GetSchedule()
         {
-            throw new NotImplementedException();
+            var mmcsc = new MMCSClient();
+            int c, g;
+            var flagc = int.TryParse(Course, out c);
+            var flagg = int.TryParse(Group, out g);
+            /*if (!flagc || !flagg || c == 0 || g == 0)
+                return "Укажите курс и группу";*/
+            var res = await mmcsc.StudentSchedule(4 /*int.Parse(Course)*/, 9/*int.Parse(Group)*/, (int)DateTime.Now.DayOfWeek);
+            var answ = new StringBuilder();
+            res.ForEach(item => answ.Append(item));
+            return answ.ToString();
         }
 
         public async Task<String> GetLecturerSchedule()
