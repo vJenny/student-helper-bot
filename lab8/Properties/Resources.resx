@@ -124,7 +124,7 @@
     <value>rostov-on-don</value>
   </data>
   <data name="coldMsg" xml:space="preserve">
-    <value>. Ужасно холодно на улице! Лучше сидеть дома.</value>
+    <value>. Ужасно холодно на улице!Лучше сидеть дома.</value>
   </data>
   <data name="errorMsg" xml:space="preserve">
     <value>Глупый бот не понимать. Пните разработчиков :(</value>
