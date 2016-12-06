@@ -11,13 +11,13 @@ namespace lab8.Functional
     public class StudentHelper
     {
         public string Name { get; set; }
-        public string Group { get; set; }
-        public string Course { get; set; }
+        public int Group { get; set; }
+        public int Course { get; set; }
 
         public StudentHelper()
         {
             Name = "Аноним";
-            Group = Course = "0";
+            Group = Course = 0;
         }
 
         public string SetName(string name)
@@ -28,14 +28,19 @@ namespace lab8.Functional
 
         public string SetGroup(string group)
         {
-            Group = group;
-            return Resources.okayMsg;
+            int g;
+            var f = int.TryParse(group, out g);
+            Group = g;
+            return f ? Resources.okayMsg : "Неверный формат группы";
         }
 
         public string SetCourse(string course)
         {
-            Course = course;
-            return Resources.okayMsg;
+
+            int c;
+            var f = int.TryParse(course, out c);
+            Course = c;
+            return f ? Resources.okayMsg : "Неверный формат курса";
         }
 
         public async Task<string> Hello() => $"Привет, {Name}";
@@ -56,20 +61,23 @@ namespace lab8.Functional
         public async Task<string> GetSchedule()
         {
             var mmcsc = new MMCSClient();
-            int c, g;
-            var flagc = int.TryParse(Course, out c);
-            var flagg = int.TryParse(Group, out g);
-            if (!flagc || !flagg || c == 0 || g == 0)
+            if (Course == 0 || Group == 0)
                 return "Укажите курс и группу";
-            var res = await mmcsc.StudentSchedule(c, g, (int)DateTime.Now.DayOfWeek);
+            var res = await mmcsc.StudentSchedule(Course, Group, (int)DateTime.Now.DayOfWeek);
             var answ = new StringBuilder();
             res.ForEach(item => answ.Append(item));
             return answ.ToString();
         }
 
-        public async Task<String> GetLecturerSchedule()
+        public async Task<string> GetLecturerSchedule(string name)
         {
-            throw new NotImplementedException();
+            var mmcsc = new MMCSClient();
+            var res = await mmcsc.TeacherSchedule(name, (int) DateTime.Now.DayOfWeek);
+            if (res.Length == 0)
+                return $"Преподаватель {name} не найден";
+            var answ = new StringBuilder();
+            res.ForEach(item => answ.Append(item));
+            return answ.ToString();
         }
 
         public async Task<string> GetWeather()

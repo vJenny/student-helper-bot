@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -81,6 +82,8 @@ namespace lab8.Controllers
                 return _sh.SetGroup(a.PrevTo("групп"));
             if (a.IsPresent("курс"))
                 return _sh.SetCourse(a.PrevTo("курс"));
+            if (a.IsPresent("препод"))
+                return await _sh.GetLecturerSchedule(a.TakeName("препод"));
             foreach (var cmd in Commands)
                 if (a.IsPresent(cmd.Key))
                     return await cmd.Value.Invoke();

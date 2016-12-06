@@ -27,5 +27,13 @@ namespace lab8
         public static string PrevTo(this string[] str, string s) => str.PrevTo(new Regex(s));
 
         public static bool IsPresent(this string[] str, string s) => str.IsPresent(new Regex(s));
+
+        public static string TakeName(this string[] str, string s)
+        {
+            var res = "";
+            for (var i = str.ToList().FindIndex(t => t.Contains(s)) + 1; i < str.Length; ++i)
+                res += str[i];
+            return res;
+        }
     }
 }
