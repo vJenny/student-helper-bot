@@ -60,7 +60,7 @@ namespace lab8.Functional.ScheduleMMCS
         }
 
         public async Task<LessonRecord[]> TeacherSchedule(string namePattern, int day)
-            => await TeacherSchedule(new Regex(namePattern), day);
+            => await TeacherSchedule(new Regex(namePattern, RegexOptions.IgnoreCase), day);
 
         private async Task<LessonRecord[]> TeacherSch(string id, int day)
         {

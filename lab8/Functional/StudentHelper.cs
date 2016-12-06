@@ -63,7 +63,7 @@ namespace lab8.Functional
             var mmcsc = new MMCSClient();
             if (Course == 0 || Group == 0)
                 return "Укажите курс и группу";
-            var res = await mmcsc.StudentSchedule(Course, Group, (int)DateTime.Now.DayOfWeek);
+            var res = await mmcsc.StudentSchedule(Course, Group, (int)DateTime.Now.DayOfWeek - 1);
             var answ = new StringBuilder();
             res.ForEach(item => answ.Append(item));
             return answ.ToString();
@@ -72,7 +72,7 @@ namespace lab8.Functional
         public async Task<string> GetLecturerSchedule(string name)
         {
             var mmcsc = new MMCSClient();
-            var res = await mmcsc.TeacherSchedule(name, (int) DateTime.Now.DayOfWeek);
+            var res = await mmcsc.TeacherSchedule(name, (int) DateTime.Now.DayOfWeek - 1);
             if (res.Length == 0)
                 return $"Преподаватель {name} не найден";
             var answ = new StringBuilder();
