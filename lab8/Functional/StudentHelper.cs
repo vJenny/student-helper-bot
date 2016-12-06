@@ -73,8 +73,10 @@ namespace lab8.Functional
         {
             var mmcsc = new MMCSClient();
             var res = await mmcsc.TeacherSchedule(name, (int) DateTime.Now.DayOfWeek - 1);
+            if (res == null)
+                return $"Преподаватель не найден";
             if (res.Length == 0)
-                return $"Преподаватель {name} не найден";
+                return $"Нет пар";
             var answ = new StringBuilder();
             res.ForEach(item => answ.Append(item));
             return answ.ToString();

@@ -82,7 +82,7 @@ namespace lab8.Functional.ScheduleMMCS
                 
             }
 
-            return new LessonRecord[] { };
+            return null;
         }
     }
 
