@@ -31,7 +31,7 @@ namespace lab8.Controllers
                 var user = userData.GetProperty<StudentHelper>("profile");
                 if (user != null) _sh = user;
 
-                var text = await Reply(activity.Text, _sh);
+                var text = await Reply(activity.Text);
                 var reply = activity.CreateReply(text);
                 userData.SetProperty("profile", _sh);
                 await state.BotState.SetUserDataAsync(activity.ChannelId, activity.From.Id, userData);
@@ -45,7 +45,7 @@ namespace lab8.Controllers
             return response;
         }
 
-        private static readonly Dictionary<string, BotTask> Commands = new Dictionary<string, BotTask>
+        private static Dictionary<string, BotTask> Commands => new Dictionary<string, BotTask>
         {
             { "помоги", _sh.Greeting },
             { "делать", _sh.Greeting },
@@ -69,18 +69,18 @@ namespace lab8.Controllers
             { "дела", _sh.HowAreYou }
         };
 
-        public async Task<string> Reply(string msg, StudentHelper sh)
+        public async Task<string> Reply(string msg)
         {
             var a = msg.ToLower().Split(' ');
 
             if (a.IsPresent("зовут"))
-                return sh.SetName(a.NextTo("зовут"));
+                return _sh.SetName(a.NextTo("зовут"));
             if (a.IsPresent("имя"))
-                return sh.SetName(a.NextTo("имя"));
+                return _sh.SetName(a.NextTo("имя"));
             if (a.IsPresent("групп"))
-                return sh.SetGroup(a.PrevTo("групп"));
+                return _sh.SetGroup(a.PrevTo("групп"));
             if (a.IsPresent("курс"))
-                return sh.SetCourse(a.PrevTo("курс"));
+                return _sh.SetCourse(a.PrevTo("курс"));
             foreach (var cmd in Commands)
                 if (a.IsPresent(cmd.Key))
                     return await cmd.Value.Invoke();

@@ -136,7 +136,7 @@
     <value>Я могу узнать Ваше расписание,  рассказать, чем можно подкрепиться в столовой,  подсказать часы работы деканата, узнать для Вас погоду.</value>
   </data>
   <data name="ntmyMsg" xml:space="preserve">
-    <value>Приятно познакомиться,</value>
+    <value>Приятно познакомиться, </value>
   </data>
   <data name="okayMsg" xml:space="preserve">
     <value>Окей, запомнил!</value>

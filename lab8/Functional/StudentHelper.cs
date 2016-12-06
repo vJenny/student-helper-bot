@@ -59,9 +59,9 @@ namespace lab8.Functional
             int c, g;
             var flagc = int.TryParse(Course, out c);
             var flagg = int.TryParse(Group, out g);
-            /*if (!flagc || !flagg || c == 0 || g == 0)
-                return "Укажите курс и группу";*/
-            var res = await mmcsc.StudentSchedule(4 /*int.Parse(Course)*/, 9/*int.Parse(Group)*/, (int)DateTime.Now.DayOfWeek);
+            if (!flagc || !flagg || c == 0 || g == 0)
+                return "Укажите курс и группу";
+            var res = await mmcsc.StudentSchedule(c, g, (int)DateTime.Now.DayOfWeek);
             var answ = new StringBuilder();
             res.ForEach(item => answ.Append(item));
             return answ.ToString();
