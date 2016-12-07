@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Web.Http;
 using lab8.Functional;
@@ -14,7 +15,6 @@ namespace lab8.Controllers
     [BotAuthentication]
     public class MessagesController : ApiController
     {
-        //private static StudentHelper _sh = new StudentHelper();
         private delegate Task<string> BotTask();
 
         /// <summary>
@@ -23,29 +23,36 @@ namespace lab8.Controllers
         /// </summary>
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
         {
-            if (activity.Type == ActivityTypes.Message)
+            try
             {
-                var connector = new ConnectorClient(new Uri(activity.ServiceUrl));
-                var state = activity.GetStateClient();
-                var userData = await state.BotState.GetUserDataAsync(activity.ChannelId, activity.From.Id);
+                if (activity.Type == ActivityTypes.Message)
+                {
+                    var connector = new ConnectorClient(new Uri(activity.ServiceUrl));
+                    var state = activity.GetStateClient();
+                    var userData = await state.BotState.GetUserDataAsync(activity.ChannelId, activity.From.Id);
 
-                var profile = $"profile{activity.Conversation.Id}";
+                    var profile = $"profile{activity.Conversation.Id}";
 
-                var user = userData.GetProperty<StudentHelper>(profile) ?? new StudentHelper();
-                //if (user != null) _sh = user;
+                    var user = userData.GetProperty<StudentHelper>(profile) ?? new StudentHelper();
 
-                var text = await Reply(activity.Text, user);
-                var reply = activity.CreateReply(text);
-                userData.SetProperty(profile, user);
-                await state.BotState.SetUserDataAsync(activity.ChannelId, activity.From.Id, userData);
-                await connector.Conversations.ReplyToActivityAsync(reply);
+                    var text = await Reply(activity.Text, user);
+                    var reply = activity.CreateReply(text);
+                    userData.SetProperty(profile, user);
+                    await state.BotState.SetUserDataAsync(activity.ChannelId, activity.From.Id, userData);
+                    await connector.Conversations.ReplyToActivityAsync(reply);
+                }
+                else
+                {
+                    HandleSystemMessage(activity);
+                }
+                var response = Request.CreateResponse(HttpStatusCode.OK);
+                return response;
             }
-            else
+            catch
             {
-                HandleSystemMessage(activity);
+                var response = Request.CreateResponse(HttpStatusCode.OK);
+                return response;
             }
-            var response = Request.CreateResponse(HttpStatusCode.OK);
-            return response;
         }
 
         private static Dictionary<string, BotTask> Commands(StudentHelper _sh) => new Dictionary<string, BotTask>
@@ -69,7 +76,10 @@ namespace lab8.Controllers
             { "погода",  _sh.GetWeather },
             { "спать",  _sh.GetWeather },
             { "никуда",  _sh.GetWeather },
-            { "дела", _sh.HowAreYou }
+            { "дела", _sh.HowAreYou },
+            { "start", _sh.Greeting },
+            { "help", _sh.Help },
+            { "reset", _sh.Reset }
         };
 
         public async Task<string> Reply(string msg, StudentHelper _sh)
