@@ -14,7 +14,6 @@ namespace lab8.Controllers
     [BotAuthentication]
     public class MessagesController : ApiController
     {
-        //private static StudentHelper _sh = new StudentHelper();
         private delegate Task<string> BotTask();
 
         /// <summary>
@@ -32,7 +31,6 @@ namespace lab8.Controllers
                 var profile = $"profile{activity.Conversation.Id}";
 
                 var user = userData.GetProperty<StudentHelper>(profile) ?? new StudentHelper();
-                //if (user != null) _sh = user;
 
                 var text = await Reply(activity.Text, user);
                 var reply = activity.CreateReply(text);
@@ -69,7 +67,9 @@ namespace lab8.Controllers
             { "погода",  _sh.GetWeather },
             { "спать",  _sh.GetWeather },
             { "никуда",  _sh.GetWeather },
-            { "дела", _sh.HowAreYou }
+            { "дела", _sh.HowAreYou },
+            { "/start", _sh.Greeting },
+            { "/help", _sh.Help }
         };
 
         public async Task<string> Reply(string msg, StudentHelper _sh)
