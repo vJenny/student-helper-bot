@@ -41,7 +41,7 @@ namespace lab8.Controllers
             }
             else
             {
-                HandleSystemMessage(activity);
+                //HandleSystemMessage(activity);
             }
             var response = Request.CreateResponse(HttpStatusCode.OK);
             return response;
