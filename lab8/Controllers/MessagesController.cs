@@ -69,29 +69,29 @@ namespace lab8.Controllers
             { "спать",  _sh.GetWeather },
             { "никуда",  _sh.GetWeather },
             { "дела", _sh.HowAreYou },
-            { "/start", _sh.Greeting },
-            { "/help", _sh.Help },
-            { "/reset", _sh.Reset }
+            { "start", _sh.Greeting },
+            { "help", _sh.Help },
+            { "reset", _sh.Reset }
         };
 
         public async Task<string> Reply(string msg, StudentHelper _sh)
         {
-                var a = msg.ToLower().Split(' ');
+            var a = msg.ToLower().Split(' ');
 
-                if (a.IsPresent("зовут"))
-                    return _sh.SetName(a.NextTo("зовут"));
-                if (a.IsPresent("имя"))
-                    return _sh.SetName(a.NextTo("имя"));
-                if (a.IsPresent("групп"))
-                    return _sh.SetGroup(a.PrevTo("групп"));
-                if (a.IsPresent("курс"))
-                    return _sh.SetCourse(a.PrevTo("курс"));
-                if (a.IsPresent("препод"))
-                    return await _sh.GetLecturerSchedule(a.TakeName("препод"));
-                var commands = Commands(_sh);
-                foreach (var cmd in commands)
-                    if (a.IsPresent(cmd.Key))
-                        return await cmd.Value.Invoke();
+            if (a.IsPresent("зовут"))
+                return _sh.SetName(a.NextTo("зовут"));
+            if (a.IsPresent("имя"))
+                return _sh.SetName(a.NextTo("имя"));
+            if (a.IsPresent("групп"))
+                return _sh.SetGroup(a.PrevTo("групп"));
+            if (a.IsPresent("курс"))
+                return _sh.SetCourse(a.PrevTo("курс"));
+            if (a.IsPresent("препод"))
+                return await _sh.GetLecturerSchedule(a.TakeName("препод"));
+            var commands = Commands(_sh);
+            foreach (var cmd in commands)
+                if (a.IsPresent(cmd.Key))
+                    return await cmd.Value.Invoke();
             return Resources.errorMsg;
         }
 
