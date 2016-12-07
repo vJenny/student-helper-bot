@@ -23,28 +23,36 @@ namespace lab8.Controllers
         /// </summary>
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
         {
-            if (activity.Type == ActivityTypes.Message)
+            try
             {
-                var connector = new ConnectorClient(new Uri(activity.ServiceUrl));
-                var state = activity.GetStateClient();
-                var userData = await state.BotState.GetUserDataAsync(activity.ChannelId, activity.From.Id);
+                if (activity.Type == ActivityTypes.Message)
+                {
+                    var connector = new ConnectorClient(new Uri(activity.ServiceUrl));
+                    var state = activity.GetStateClient();
+                    var userData = await state.BotState.GetUserDataAsync(activity.ChannelId, activity.From.Id);
 
-                var profile = $"profile{activity.Conversation.Id}";
+                    var profile = $"profile{activity.Conversation.Id}";
 
-                var user = userData.GetProperty<StudentHelper>(profile) ?? new StudentHelper();
+                    var user = userData.GetProperty<StudentHelper>(profile) ?? new StudentHelper();
 
-                var text = await Reply(activity.Text, user);
-                var reply = activity.CreateReply(text);
-                userData.SetProperty(profile, user);
-                await state.BotState.SetUserDataAsync(activity.ChannelId, activity.From.Id, userData);
-                await connector.Conversations.ReplyToActivityAsync(reply);
+                    var text = await Reply(activity.Text, user);
+                    var reply = activity.CreateReply(text);
+                    userData.SetProperty(profile, user);
+                    await state.BotState.SetUserDataAsync(activity.ChannelId, activity.From.Id, userData);
+                    await connector.Conversations.ReplyToActivityAsync(reply);
+                }
+                else
+                {
+                    HandleSystemMessage(activity);
+                }
+                var response = Request.CreateResponse(HttpStatusCode.OK);
+                return response;
             }
-            else
+            catch
             {
-                //HandleSystemMessage(activity);
+                var response = Request.CreateResponse(HttpStatusCode.OK);
+                return response;
             }
-            var response = Request.CreateResponse(HttpStatusCode.OK);
-            return response;
         }
 
         private static Dictionary<string, BotTask> Commands(StudentHelper _sh) => new Dictionary<string, BotTask>
