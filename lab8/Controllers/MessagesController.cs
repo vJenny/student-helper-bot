@@ -33,8 +33,8 @@ namespace lab8.Controllers
 
                 var user = userData.GetProperty<StudentHelper>(profile) ?? new StudentHelper();
 
-                var text = await Reply(activity.Text, user);
-                var reply = activity.CreateReply(text);
+                //var text = await Reply(activity.Text, user);
+                var reply = activity.CreateReply($"profile{activity.Conversation.Id}");
                 userData.SetProperty(profile, user);
                 await state.BotState.SetUserDataAsync(activity.ChannelId, activity.From.Id, userData);
                 await connector.Conversations.ReplyToActivityAsync(reply);
