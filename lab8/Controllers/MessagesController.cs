@@ -76,8 +76,6 @@ namespace lab8.Controllers
 
         public async Task<string> Reply(string msg, StudentHelper _sh)
         {
-            try
-            {
                 var a = msg.ToLower().Split(' ');
 
                 if (a.IsPresent("зовут"))
@@ -94,11 +92,6 @@ namespace lab8.Controllers
                 foreach (var cmd in commands)
                     if (a.IsPresent(cmd.Key))
                         return await cmd.Value.Invoke();
-            }
-            catch (Exception e)
-            {
-                return "Что-то пошло не так...";
-            }
             return Resources.errorMsg;
         }
 
