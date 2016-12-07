@@ -57,6 +57,14 @@ namespace lab8.Functional
         public async Task<string> GetDiningHallMenu()
             => DiningHall.WhatToEat(DateTime.Now.DayOfWeek);
 
+        public async Task<string> Reset()
+        {
+            Course = 0;
+            Group = 0;
+            Name = "Аноним";
+
+            return "Настройки сброшены.";
+        }
 
         public async Task<string> GetSchedule()
         {
