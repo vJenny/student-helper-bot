@@ -14,7 +14,7 @@ namespace lab8
 
         public static string PrevTo(this string[] str, Regex pat)
         {
-            for (var i = 0; i < str.Length; i++)
+            for (var i = 1; i < str.Length; i++)
                 if (pat.IsMatch(str[i])) return str[i - 1];
             return "";
         }

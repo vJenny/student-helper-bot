@@ -91,9 +91,17 @@ namespace lab8.Controllers
             if (a.IsPresent("имя"))
                 return _sh.SetName(a.NextTo("имя"));
             if (a.IsPresent("групп"))
-                return _sh.SetGroup(a.PrevTo("групп"));
+            {
+                var g = a.PrevTo("групп");
+                g = g == "" ? a.NextTo("групп") : g;
+                return _sh.SetGroup(g);
+            }
             if (a.IsPresent("курс"))
-                return _sh.SetCourse(a.PrevTo("курс"));
+            {
+                var c = a.PrevTo("курс");
+                c = c == "" ? a.NextTo("курс") : c;
+                return _sh.SetCourse(c);
+            }
             if (a.IsPresent("препод"))
                 return await _sh.GetLecturerSchedule(a.TakeName("препод"));
             var commands = Commands(_sh);
