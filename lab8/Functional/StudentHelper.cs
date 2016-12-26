@@ -13,11 +13,13 @@ namespace lab8.Functional
         public string Name { get; set; }
         public int Group { get; set; }
         public int Course { get; set; }
+        public string City { get; set; } ///Город
 
         public StudentHelper()
         {
             Name = "Аноним";
             Group = Course = 0;
+            City = null; //по-умолчанию
         }
 
         public string SetName(string name)
@@ -34,14 +36,60 @@ namespace lab8.Functional
             return f ? Resources.okayMsg : "Неверный формат группы";
         }
 
+
+        ///установили город
+        public string SetCity(string city)
+        {
+            switch (city.ToLower())
+            {
+                case "москва":
+                    City = "moscow";
+                    break;
+                case "ростов":
+                    City = "rostov-on-don";
+                    break;
+                case "краснодар":
+                    City = "krasnodar";
+                    break;
+                case "питер":
+                    City = "Saint Petersburg";
+                    break;
+                case "сочи":
+                    City = "sochi";
+                    break;
+                case "екатеринбург":
+                    City = "yekaterinburg";
+                    break;
+                default:
+                    break;
+            }
+
+            return (City == null) ? "Я не знаю такого города! Возможно он находится в другой галактике!" : Resources.okayMsg;
+        }
+
         public string SetCourse(string course)
         {
-
             int c;
             var f = int.TryParse(course, out c);
             Course = c;
             return f ? Resources.okayMsg : "Неверный формат курса";
         }
+
+        public async Task<string> TnkxMsg() => Resources.thnxMsg;
+
+        public async Task<string> AllUnderstand() => Resources.allUnderstand;
+
+        public async Task<string> WowCool() => Resources.wowСool;
+
+        public async Task<string> JohnKonor() => Resources.johnKonor;
+
+        public async Task<string> Danger() => Resources.danger;
+
+        public async Task<string> HowSaving() => Resources.howSaving;
+
+        public async Task<string> AboutSelf() => Resources.aboutSelf;
+
+        public async Task<string> CareMsg() => Resources.careMsg;
 
         public async Task<string> Hello() => $"Привет, {Name}";
 
@@ -62,6 +110,7 @@ namespace lab8.Functional
             Course = 0;
             Group = 0;
             Name = "Аноним";
+            City = null;
 
             return "Настройки сброшены.";
         }
@@ -90,13 +139,39 @@ namespace lab8.Functional
             return answ.ToString();
         }
 
+        public string toNormalName(string city)
+        {
+            switch (city)
+            {
+                case "moscow":
+                    return "Москва";
+                case "rostov-on-don":
+                    return "Ростов-на-Дону";
+                case "Saint Petersburg":
+                    return "Санкт-Петербург";
+                case "krasnodar":
+                    return "Краснодар";
+                case "sochi":
+                    return "Сочи";
+                case "yekaterinburg":
+                    return "Екатеринбург";
+                default:
+                    return "None";
+            }
+        }
+
         public async Task<string> GetWeather()
         {
+            if (City == null)
+                return "Для начала, введите название города, Сэр";
+
             var owm = new WeatherClient(Resources.wmKey);
-            var res = await owm.Forecast(Resources.city);
+            var res = await owm.Forecast(City);
 
             var weather = res[0];
             var sb = new StringBuilder();
+
+            sb.Append("Погода в городе " + toNormalName(City) + " ");
 
             sb.Append(weather.Temp < -10
                 ? weather.Temp + Resources.coldMsg

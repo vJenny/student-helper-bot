@@ -61,11 +61,38 @@ namespace lab8.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Я бот,прилетевший с планеты Фаэтон. Я появился на свет в 2347 году. Моим создателем был некий человек по имени Джон Конор, а точнее его галограмма из прошлого. Я был призван прилететь на Вашу планету и защищать Вас, землян, от грядущей опасности!.
+        /// </summary>
+        internal static string aboutSelf {
+            get {
+                return ResourceManager.GetString("aboutSelf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Отлично! Я же бот..
         /// </summary>
         internal static string allrightMsg {
             get {
                 return ResourceManager.GetString("allrightMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Ну раз понятно, тогда я пошёл пить чай!.
+        /// </summary>
+        internal static string allUnderstand {
+            get {
+                return ResourceManager.GetString("allUnderstand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Всё будет отлично! Не унывай!.
+        /// </summary>
+        internal static string careMsg {
+            get {
+                return ResourceManager.GetString("careMsg", resourceCulture);
             }
         }
         
@@ -84,6 +111,15 @@ namespace lab8.Properties {
         internal static string coldMsg {
             get {
                 return ResourceManager.GetString("coldMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на В скором времени,на Вашу планету прилетят межпланетарные захватчики. Они хотят заполучить Вашу планету в качестве сырья для создания своего оружия, так как на Вашей планете очень много полезных ископаемых.  Они будут использовать людей в качестве бесплатной рабочей силы на своё благо. .
+        /// </summary>
+        internal static string danger {
+            get {
+                return ResourceManager.GetString("danger", resourceCulture);
             }
         }
         
@@ -111,6 +147,24 @@ namespace lab8.Properties {
         internal static string helpMsg {
             get {
                 return ResourceManager.GetString("helpMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Никак. Спасти человечество могу только я. Когда они ступят на Вашу землю и поглотят большую часть её территории, я проникну в серце межпланетного коробля U-019-X и выведу из строя модуль управления их миссией. После чего произовйдёт полное уничтожение врага. Человечество будет пытаться сопротивляться, но понесёт огромные потери. Это бесполезно..
+        /// </summary>
+        internal static string howSaving {
+            get {
+                return ResourceManager.GetString("howSaving", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Джон Конор - лидер всемирного сопротивления в войне между человечеством и машинами. Он последняя надежда человечества. Он создаст меня в будущем для того, что бы я вернулся в прошлое и спас человечество от гибели..
+        /// </summary>
+        internal static string johnKonor {
+            get {
+                return ResourceManager.GetString("johnKonor", resourceCulture);
             }
         }
         
@@ -169,6 +223,15 @@ namespace lab8.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Не за что! Я пока что не устал от Ваших вопросов..
+        /// </summary>
+        internal static string thnxMsg {
+            get {
+                return ResourceManager.GetString("thnxMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на C. Отличная погода, чтобы погулять..
         /// </summary>
         internal static string warmMsg {
@@ -183,6 +246,15 @@ namespace lab8.Properties {
         internal static string wmKey {
             get {
                 return ResourceManager.GetString("wmKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Спасибо, я знаю !) Джон постарался).
+        /// </summary>
+        internal static string wowСool {
+            get {
+                return ResourceManager.GetString("wowСool", resourceCulture);
             }
         }
     }

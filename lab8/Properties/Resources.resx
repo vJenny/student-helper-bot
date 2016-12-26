@@ -117,14 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="aboutSelf" xml:space="preserve">
+    <value>Я бот,прилетевший с планеты Фаэтон. Я появился на свет в 2347 году. Моим создателем был некий человек по имени Джон Конор, а точнее его галограмма из прошлого. Я был призван прилететь на Вашу планету и защищать Вас, землян, от грядущей опасности!</value>
+  </data>
   <data name="allrightMsg" xml:space="preserve">
     <value>Отлично! Я же бот.</value>
+  </data>
+  <data name="allUnderstand" xml:space="preserve">
+    <value>Ну раз понятно, тогда я пошёл пить чай!</value>
+  </data>
+  <data name="careMsg" xml:space="preserve">
+    <value>Всё будет отлично! Не унывай!</value>
   </data>
   <data name="city" xml:space="preserve">
     <value>rostov-on-don</value>
   </data>
   <data name="coldMsg" xml:space="preserve">
     <value>. Ужасно холодно на улице!Лучше сидеть дома.</value>
+  </data>
+  <data name="danger" xml:space="preserve">
+    <value>В скором времени,на Вашу планету прилетят межпланетарные захватчики. Они хотят заполучить Вашу планету в качестве сырья для создания своего оружия, так как на Вашей планете очень много полезных ископаемых.  Они будут использовать людей в качестве бесплатной рабочей силы на своё благо. </value>
   </data>
   <data name="errorMsg" xml:space="preserve">
     <value>Глупый бот не понимать. Пните разработчиков :(</value>
@@ -134,6 +146,12 @@
   </data>
   <data name="helpMsg" xml:space="preserve">
     <value>Я могу узнать Ваше расписание,  рассказать, чем можно подкрепиться в столовой,  подсказать часы работы деканата, узнать для Вас погоду.</value>
+  </data>
+  <data name="howSaving" xml:space="preserve">
+    <value>Никак. Спасти человечество могу только я. Когда они ступят на Вашу землю и поглотят большую часть её территории, я проникну в серце межпланетного коробля U-019-X и выведу из строя модуль управления их миссией. После чего произовйдёт полное уничтожение врага. Человечество будет пытаться сопротивляться, но понесёт огромные потери. Это бесполезно.</value>
+  </data>
+  <data name="johnKonor" xml:space="preserve">
+    <value>Джон Конор - лидер всемирного сопротивления в войне между человечеством и машинами. Он последняя надежда человечества. Он создаст меня в будущем для того, что бы я вернулся в прошлое и спас человечество от гибели.</value>
   </data>
   <data name="ntmyMsg" xml:space="preserve">
     <value>Приятно познакомиться, </value>
@@ -153,10 +171,16 @@
   <data name="sunnyMsg" xml:space="preserve">
     <value>Дождя не ожидается.</value>
   </data>
+  <data name="thnxMsg" xml:space="preserve">
+    <value>Не за что! Я пока что не устал от Ваших вопросов.</value>
+  </data>
   <data name="warmMsg" xml:space="preserve">
     <value>C. Отличная погода, чтобы погулять.</value>
   </data>
   <data name="wmKey" xml:space="preserve">
     <value>522ea52cffe0c78955e0e319e1572a7b</value>
+  </data>
+  <data name="wowСool" xml:space="preserve">
+    <value>Спасибо, я знаю !) Джон постарался)</value>
   </data>
 </root>

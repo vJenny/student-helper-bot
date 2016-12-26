@@ -79,13 +79,32 @@ namespace lab8.Controllers
             { "дела", _sh.HowAreYou },
             { "start", _sh.Greeting },
             { "help", _sh.Help },
-            { "reset", _sh.Reset }
+            { "reset", _sh.Reset },
+            { "плохо", _sh.CareMsg },
+            { "себе", _sh.AboutSelf },
+            { "спастись", _sh.HowSaving },
+            { "выжить", _sh.HowSaving },
+            { "прикольно", _sh.WowCool },
+            { "круто", _sh.WowCool },
+            { "джон", _sh.JohnKonor },
+            { "конор", _sh.JohnKonor },
+            { "кто", _sh.AboutSelf },
+            { "опасно", _sh.Danger },
+            { "угрожать", _sh.Danger },
+            { "угрожает", _sh.Danger },
+            { "угроза", _sh.Danger },
+            { "ясно", _sh.AllUnderstand },
+            { "понятно", _sh.AllUnderstand },
+            { "спасибо", _sh.TnkxMsg },
+            { "благодарю", _sh.TnkxMsg }
         };
 
         public async Task<string> Reply(string msg, StudentHelper _sh)
         {
             var a = msg.ToLower().Split(' ');
 
+            if (a.IsPresent("город"))
+                return _sh.SetCity(a.NextTo("город"));
             if (a.IsPresent("зовут"))
                 return _sh.SetName(a.NextTo("зовут"));
             if (a.IsPresent("имя"))
