@@ -23,8 +23,6 @@ namespace lab8.Controllers
         /// </summary>
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
         {
-            try
-            {
                 if (activity.Type == ActivityTypes.Message)
                 {
                     var connector = new ConnectorClient(new Uri(activity.ServiceUrl));
@@ -47,12 +45,6 @@ namespace lab8.Controllers
                 }
                 var response = Request.CreateResponse(HttpStatusCode.OK);
                 return response;
-            }
-            catch
-            {
-                var response = Request.CreateResponse(HttpStatusCode.OK);
-                return response;
-            }
         }
 
         private static Dictionary<string, BotTask> Commands(StudentHelper _sh) => new Dictionary<string, BotTask>

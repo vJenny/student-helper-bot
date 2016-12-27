@@ -126,7 +126,6 @@
     <Compile Include="Functional\News\NewsRecord.cs" />
     <Compile Include="Functional\OpenWeatherMap\WeatherClient.cs" />
     <Compile Include="Functional\OpenWeatherMap\WeatherRecord.cs" />
-    <Compile Include="Functional\OpenWeatherMap\Schedule.cs" />
     <Compile Include="Functional\ScheduleMMCS\ScheduleClient.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
