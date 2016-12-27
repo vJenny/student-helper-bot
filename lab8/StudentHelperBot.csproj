@@ -122,6 +122,8 @@
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Functional\DeansOffice.cs" />
     <Compile Include="Functional\DiningHall.cs" />
+    <Compile Include="Functional\News\NewsClient.cs" />
+    <Compile Include="Functional\News\NewsRecord.cs" />
     <Compile Include="Functional\OpenWeatherMap\WeatherClient.cs" />
     <Compile Include="Functional\OpenWeatherMap\WeatherRecord.cs" />
     <Compile Include="Functional\OpenWeatherMap\Schedule.cs" />

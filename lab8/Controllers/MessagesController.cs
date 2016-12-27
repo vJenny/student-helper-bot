@@ -96,7 +96,11 @@ namespace lab8.Controllers
             { "ясно", _sh.AllUnderstand },
             { "понятно", _sh.AllUnderstand },
             { "спасибо", _sh.TnkxMsg },
-            { "благодарю", _sh.TnkxMsg }
+            { "благодарю", _sh.TnkxMsg },
+            { "новости", _sh.GetNews },
+            { "расска", _sh.GetNews },
+            { "пока", _sh.BayMsg },
+            { "прощай", _sh.BayMsg }
         };
 
         public async Task<string> Reply(string msg, StudentHelper _sh)

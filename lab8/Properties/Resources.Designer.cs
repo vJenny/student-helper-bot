@@ -88,6 +88,15 @@ namespace lab8.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Досвидания, человек!.
+        /// </summary>
+        internal static string bayMsg {
+            get {
+                return ResourceManager.GetString("bayMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Всё будет отлично! Не унывай!.
         /// </summary>
         internal static string careMsg {
@@ -142,7 +151,7 @@ namespace lab8.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Я могу узнать Ваше расписание,  рассказать, чем можно подкрепиться в столовой,  подсказать часы работы деканата, узнать для Вас погоду..
+        ///   Ищет локализованную строку, похожую на Я могу узнать Ваше расписание,  рассказать, чем можно подкрепиться в столовой,  подсказать часы работы деканата, узнать для Вас погоду, рассказать последние актуальные новости..
         /// </summary>
         internal static string helpMsg {
             get {
@@ -165,6 +174,15 @@ namespace lab8.Properties {
         internal static string johnKonor {
             get {
                 return ResourceManager.GetString("johnKonor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на 23f744682d334ceda9267fb8fd4c4964.
+        /// </summary>
+        internal static string newsKey {
+            get {
+                return ResourceManager.GetString("newsKey", resourceCulture);
             }
         }
         

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Chronic;
 using lab8.Functional.OpenWeatherMap;
 using lab8.Functional.ScheduleMMCS;
+using lab8.Functional.News;
 using lab8.Properties;
 
 namespace lab8.Functional
@@ -75,6 +76,8 @@ namespace lab8.Functional
             return f ? Resources.okayMsg : "Неверный формат курса";
         }
 
+        public async Task<string> BayMsg() => Resources.bayMsg;
+
         public async Task<string> TnkxMsg() => Resources.thnxMsg;
 
         public async Task<string> AllUnderstand() => Resources.allUnderstand;
@@ -115,6 +118,31 @@ namespace lab8.Functional
             return "Настройки сброшены.";
         }
 
+        /// <summary>
+        /// Новости
+        /// </summary>
+        /// <returns></returns>
+        public async Task<string> GetNews()
+        {
+            var meduza = new NewsClient(Resources.newsKey); //новости с одной странице
+
+            var news = await meduza.getNews(); ///именно новости
+
+            var strBuild = new StringBuilder();
+
+            strBuild.AppendLine("Последние новости:\r\n");
+
+            foreach (var nnew in news)
+            {
+                strBuild.AppendLine("Заголовок:\r\n" + nnew.Title);
+                strBuild.AppendLine("\r\nДата:\r\n" + nnew.Date);
+                strBuild.AppendLine("\r\nОписание:\r\n" + nnew.Description);
+                strBuild.AppendLine("\r\nURL:\r\n" + nnew.Url);
+            }
+                        
+            return strBuild.ToString();
+        }    
+    
         public async Task<string> GetSchedule()
         {
             var mmcsc = new MMCSClient();
