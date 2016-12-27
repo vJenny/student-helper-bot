@@ -27,6 +27,7 @@ namespace lab8.Functional.OpenWeatherMap
                     {
                         When = Convert((long)z.dt),
                         Temp = z.temp.day,
+                        NightTemp = z.temp.night,
                         Pressure = z.pressure,
                         Humidity = z.humidity,
                     });

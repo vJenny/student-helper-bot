@@ -15,12 +15,15 @@ namespace lab8.Functional
         public int Group { get; set; }
         public int Course { get; set; }
         public string City { get; set; } ///Город
+        public int Date { get; set; } // Дата 
+
 
         public StudentHelper()
         {
             Name = "Аноним";
             Group = Course = 0;
             City = null; //по-умолчанию
+            Date = -1;
         }
 
         public string SetName(string name)
@@ -37,6 +40,26 @@ namespace lab8.Functional
             return f ? Resources.okayMsg : "Неверный формат группы";
         }
 
+        public string SetDate(string day)
+        {
+            switch (day)
+            {
+                case "сегодня":
+                    Date = 0;
+                    break;
+                case "завтра":
+                    Date = 1;
+                    break;
+                default:
+                    break;
+            }
+            int res;
+            if (Int32.TryParse(day, out res))
+                if (res < 31)
+                    Date = res - DateTime.Now.Day;
+            return (Date < 0) ? "Что-то не так с Вашей датой! Какой сейчас год?" : Resources.okayMsg;
+
+        }
 
         ///установили город
         public string SetCity(string city)
@@ -183,6 +206,12 @@ namespace lab8.Functional
                     return "Сочи";
                 case "yekaterinburg":
                     return "Екатеринбург";
+                case "Kazan":
+                    return "Казань";
+                case "Taganrog":
+                    return "Таганрог";
+                case "Novocherkassk":
+                    return "Новочеркасск";
                 default:
                     return "None";
             }
@@ -191,21 +220,35 @@ namespace lab8.Functional
         public async Task<string> GetWeather()
         {
             if (City == null)
-                return "Для начала, введите название города, Сэр";
+                return "Для начала, введите название города, Сэр!";
 
             var owm = new WeatherClient(Resources.wmKey);
             var res = await owm.Forecast(City);
 
-            var weather = res[0];
+            if (Date < 0)
+                return "Вам погоду на какой день? Можете спросить 'нужно сегодня', 'нужно завтра', 'нужно на 17'";
+
+            var weather = res[Date];
             var sb = new StringBuilder();
+            string curdate = "";
+            if (Date == 0)
+                curdate = "сегодня ";
+            else if (Date == 1)
+                curdate = "завтра ";
+            else if (Date > 1)
+            {
+                DateTime cd = DateTime.Now.AddDays(Date);
+                curdate = cd.Date.Day.ToString() + "." + cd.Date.Month.ToString() + " ";
+            }
+            sb.Append("(Погода в городе " + toNormalName(City) + " на " + curdate + " ) ");
 
             sb.Append("Погода в городе " + toNormalName(City) + " ");
 
             sb.Append(weather.Temp < -10
-                ? weather.Temp + Resources.coldMsg
+                ? " днем: " + weather.Temp + ", ночью: " + weather.NightTemp + " " +  Resources.coldMsg
                 : (DateTime.Now.DayOfWeek == DayOfWeek.Sunday ?
                 weather.Temp + Resources.warmMsg
-                : weather.Temp + Resources.studyMsg));
+                : " днем " + weather.Temp + ", ночью: " + weather.NightTemp + " " + Resources.studyMsg));
             sb.Append(weather.Humidity <= 50
                 ? Resources.sunnyMsg
                 : (weather.Temp > 0 ? Resources.rainMsg : Resources.snowMsg));

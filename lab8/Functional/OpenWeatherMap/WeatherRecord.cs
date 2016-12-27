@@ -11,5 +11,7 @@ namespace lab8.Functional.OpenWeatherMap
             public string Date => $"{When.Day:D2}.{When.Month:D2}";
 
         public string FullDate => When.ToString("D");
+
+        public dynamic NightTemp { get; internal set; }
     }
 }

@@ -74,6 +74,7 @@ namespace lab8.Controllers
             { "расписание", _sh.GetSchedule },
             { "идти",  _sh.GetWeather },
             { "погода",  _sh.GetWeather },
+            { "погоде", _sh.GetWeather },
             { "спать",  _sh.GetWeather },
             { "никуда",  _sh.GetWeather },
             { "дела", _sh.HowAreYou },
@@ -109,6 +110,8 @@ namespace lab8.Controllers
 
             if (a.IsPresent("город"))
                 return _sh.SetCity(a.NextTo("город"));
+            if (a.IsPresent("мехмат"))
+                return _sh.SetCity("Ростов");
             if (a.IsPresent("зовут"))
                 return _sh.SetName(a.NextTo("зовут"));
             if (a.IsPresent("имя"))
@@ -119,6 +122,8 @@ namespace lab8.Controllers
                 return _sh.SetCourse(a.PrevTo("курс"));
             if (a.IsPresent("препод"))
                 return await _sh.GetLecturerSchedule(a.TakeName("препод"));
+            if (a.IsPresent("нужно"))
+                return _sh.SetDate(a.NextTo("нужно"));
             var commands = Commands(_sh);
             foreach (var cmd in commands)
                 if (a.IsPresent(cmd.Key))
