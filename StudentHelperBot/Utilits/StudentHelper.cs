@@ -90,17 +90,17 @@ namespace StudentHelperBot.Utilits
             var weather = res[0];
             var sb = new StringBuilder();
             sb.Append(weather.Temp < -10
-                ? "На улице очень холодно, лучше оставайтесь дома :)\r\n."
+                ? @"На улице очень холодно, лучше оставайтесь дома :)" + Environment.NewLine
                 : weather.Temp < 0
-                ? "Лёгкий морозец. Одевайтесь теплее.\r\n"
+                ? @"Лёгкий морозец. Одевайтесь теплее." + Environment.NewLine
                 : weather.Temp < 20
-                ? @"Прохладная погода."
-                : @"На улице довольно жарко. Ура, лето!");
+                ? @"Прохладная погода." + Environment.NewLine
+                : @"На улице довольно жарко. Ура, лето!" + Environment.NewLine);
             sb.Append(weather.Humidity <= 70
-                ? @" Осадков не ожидается."
+                ? @" Осадков не ожидается." + Environment.NewLine
                 : weather.Temp < 0
-                    ? " Возможен снег. Ура, можно играть в снежки!%2F"
-                    : " Возможен дождь. Захватите зонтик.");
+                    ? @" Возможен снег. Ура, можно играть в снежки!" + Environment.NewLine
+                    : @" Возможен дождь. Захватите зонтик." + Environment.NewLine);
             sb.Append($" Температура воздуха {(int)weather.Temp}°C.");
             return sb.Length == 0 ? @"Что-то пошло не так :(" : sb.ToString(); 
         }
