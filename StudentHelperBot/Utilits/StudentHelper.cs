@@ -31,7 +31,7 @@ namespace StudentHelperBot.Utilits
             int g;
             var f = int.TryParse(group, out g);
             Group = g;
-            return f ? @"Запомнил, группа" + Group : @"Неверный формат группы";
+            return f ? @"Запомнил, группа " + Group : @"Неверный формат группы";
         }
 
         public string SetCourse(string course)

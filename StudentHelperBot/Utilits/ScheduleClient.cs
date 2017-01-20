@@ -26,6 +26,14 @@ namespace StudentHelperBot.Utilits
             return await GetLessons($"http://users.mmcs.sfedu.ru:3000/APIv0/schedule/group/{gid}", day);
         }
 
+        public async Task<LessonWeek> CurrentWeek()
+        {
+            var week = await _cli.GetStringAsync("http://users.mmcs.sfedu.ru:3000/APIv0/time/week");
+            return week.Length != 0 
+                ? (week[week.Length - 2] == '0' ? LessonWeek.Upper : LessonWeek.Lower) 
+                : LessonWeek.Full;
+        }
+
         private async Task<LessonRecord[]> GetLessons(string request, int day)
         {
             var res = await _cli.GetStringAsync(request);
@@ -52,10 +60,12 @@ namespace StudentHelperBot.Utilits
                     timeslot
                 ));
             }
-
+            var curWeek = await CurrentWeek();
             return f
-                .Where(z => z.Time.Position == day)
-                .OrderBy(z => z.Time.Start)
+                .Where(z => z.Time.Position == day && (z.Time.Week == curWeek || z.Time.Week == LessonWeek.Full))
+        .
+
+        OrderBy(z => z.Time.Start)
                 .ToArray();
         }
 
@@ -120,11 +130,7 @@ namespace StudentHelperBot.Utilits
         public TimeSpan Start { get; }
         public TimeSpan End { get; }
 
-        public override string ToString()
-        {
-            var week = Week == LessonWeek.Lower ? "нижняя неделя" : (Week == LessonWeek.Upper ? "верхняя неделя" : "");
-            return $"{Start} - {End} | {week}";
-        }
+        public override string ToString() => $"{Start.Hours}:{Start.Minutes} - {End.Hours}:{End.Minutes}"; 
     }
 
     public struct LessonRecord
@@ -142,9 +148,7 @@ namespace StudentHelperBot.Utilits
         public string SubjectName { get; }
         public string RoomName { get; }
 
-        public override string ToString()
-        {
-            return $"{ Time } {SubjectName} ({RoomName}) -- {TeacherName}\r\n";
-        }
+        public override string ToString() 
+            => $"{ Time } {SubjectName} ({RoomName}) -- {TeacherName}       \r\n";
     }
 }
