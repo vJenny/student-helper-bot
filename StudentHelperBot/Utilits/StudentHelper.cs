@@ -99,7 +99,7 @@ namespace StudentHelperBot.Utilits
             sb.Append(weather.Humidity <= 70
                 ? @" Осадков не ожидается."
                 : weather.Temp < 0
-                    ? " Возможен снег. Ура, можно играть в снежки!\n\r"
+                    ? " Возможен снег. Ура, можно играть в снежки!%2F"
                     : " Возможен дождь. Захватите зонтик.");
             sb.Append($" Температура воздуха {(int)weather.Temp}°C.");
             return sb.Length == 0 ? @"Что-то пошло не так :(" : sb.ToString(); 
