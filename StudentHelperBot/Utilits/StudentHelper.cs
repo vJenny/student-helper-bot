@@ -21,7 +21,7 @@ namespace StudentHelperBot.Utilits
         public string SetName(string name)
         {
             Name = char.ToUpper(name[0]) + name.Remove(0, 1);
-            return ""; // Resources.ntmyMsg + Name + "!";
+            return @"Приятно познакомиться, " + Name + "!";
         }
 
         public string SetGroup(string group)
@@ -29,7 +29,7 @@ namespace StudentHelperBot.Utilits
             int g;
             var f = int.TryParse(group, out g);
             Group = g;
-            return f ? /*Resources.okayMsg*/ "" : "Неверный формат группы";
+            return f ? @"Запомнил, группа" + Group : @"Неверный формат группы";
         }
 
         public string SetCourse(string course)
@@ -38,17 +38,19 @@ namespace StudentHelperBot.Utilits
             int c;
             var f = int.TryParse(course, out c);
             Course = c;
-            return f ? /*Resources.okayMsg*/ "" : "Неверный формат курса";
+            return f ? @"Запомнил, курс " + Course : @"Неверный формат курса";
         }
 
-        public async Task<string> Hello() => $"Привет, {Name}";
-        public async Task<string> Help() => "";//Resources.helpMsg;
-        public async Task<string> Greeting() => "";//Resources.greetingMsg;
-        public async Task<string> HowAreYou() => "";//Resources.allrightMsg;
-        public async Task<string> GetDeansOfficeSchedule()
+        public string Hello() => $"Привет, {Name}";
+
+        public string Help() => "";//Resources.helpMsg;
+
+        public string GetDeansOfficeSchedule()
             => DeansOffice.WhatSchedule(DateTime.Now.DayOfWeek);
-        public async Task<string> GetDiningHallMenu()
+
+        public string GetDiningHallMenu()
             => DiningHall.WhatToEat(DateTime.Now.DayOfWeek);
+
         public async Task<string> Reset()
         {
             Course = 0;
