@@ -63,7 +63,7 @@ namespace StudentHelperBot.Utilits
 
         public async Task<string> GetSchedule()
         {
-            var mmcsc = new MMCSClient();
+            var mmcsc = new MmcsClient();
             if (Course == 0 || Group == 0)
                 return @"Укажите курс и группу";
             var res = await mmcsc.StudentSchedule(Course, Group, (int)DateTime.Now.DayOfWeek - 1);
@@ -73,7 +73,7 @@ namespace StudentHelperBot.Utilits
         }
         public async Task<string> GetLecturerSchedule(string name)
         {
-            var mmcsc = new MMCSClient();
+            var mmcsc = new MmcsClient();
             var res = await mmcsc.TeacherSchedule(name, (int)DateTime.Now.DayOfWeek - 1);
             if (res == null)
                 return @"Преподаватель не найден";

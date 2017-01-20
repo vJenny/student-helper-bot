@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace StudentHelperBot.Utilits
 {
-    public class MMCSClient
+    public class MmcsClient
     {
         private readonly HttpClient _cli = new HttpClient();
 
@@ -67,7 +67,6 @@ namespace StudentHelperBot.Utilits
             return await GetLessons($"http://users.mmcs.sfedu.ru:3000/APIv1/schedule/teacher/{id}", day);
         }
 
-        // TODO: Возвращает только первого преподавателя, удовл. шаблоную
         public async Task<LessonRecord[]> TeacherSchedule(Regex namePattern, int day)
         {
             var data = await _cli.GetStringAsync(@"http://users.mmcs.sfedu.ru:3000/APIv0/teacher/list");
@@ -89,7 +88,7 @@ namespace StudentHelperBot.Utilits
     public enum LessonWeek
     {
         Upper,
-        Lower, // ???
+        Lower, 
         Full
     }
 
@@ -124,7 +123,7 @@ namespace StudentHelperBot.Utilits
         public override string ToString()
         {
             var week = Week == LessonWeek.Lower ? "нижняя неделя" : (Week == LessonWeek.Upper ? "верхняя неделя" : "");
-            return $"{Position}: {Start} -- {End} | {week}";
+            return $"{Start} - {End} | {week}";
         }
     }
 
@@ -145,7 +144,7 @@ namespace StudentHelperBot.Utilits
 
         public override string ToString()
         {
-            return $"{ Time } -- {SubjectName} -- {RoomName} -- {TeacherName}";
+            return $"{ Time } {SubjectName} ({RoomName}) -- {TeacherName}\r\n";
         }
     }
 }
