@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,16 +32,19 @@ namespace StudentHelperBot.Utilits
             int g;
             var f = int.TryParse(group, out g);
             Group = g;
-            return f ? @"Запомнил, группа " + Group : @"Неверный формат группы";
+            if (f && g > 0 && g < 9)
+                return @"Запомнил, группа " + Group;
+            return @"Неверный формат группы";
         }
 
         public string SetCourse(string course)
         {
-
             int c;
             var f = int.TryParse(course, out c);
             Course = c;
-            return f ? @"Запомнил, курс " + Course : @"Неверный формат курса";
+            if (f && c > 0 && c < 5)
+                return @"Запомнил, курс " + Course;
+            return  @"Неверный формат курса";
         }
 
         public string Hello() => $"Привет, {Name}";
@@ -73,6 +77,8 @@ namespace StudentHelperBot.Utilits
         }
         public async Task<string> GetLecturerSchedule(string name)
         {
+            if (name.Length == 0)
+                return @"Введите имя преподавателя.";
             var mmcsc = new MmcsClient();
             var res = await mmcsc.TeacherSchedule(name, (int)DateTime.Now.DayOfWeek - 1);
             if (res == null)
