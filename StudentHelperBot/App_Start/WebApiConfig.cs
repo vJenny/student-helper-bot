@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 
-namespace lab8
+namespace StudentHelperBot
 {
     public static class WebApiConfig
     {

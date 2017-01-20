@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Web.UI.WebControls;
 
-namespace lab8.Functional
+namespace StudentHelperBot.Utilits
 {
     public static class DiningHall
     {
@@ -31,7 +30,7 @@ namespace lab8.Functional
             { DayOfWeek.Sunday, "Столовая не работает" }
         };
 
-        public static string WhatToEat(DayOfWeek day) => 
+        public static string WhatToEat(DayOfWeek day) =>
             day == DayOfWeek.Sunday ? Menu[day] : "Сегодня в меню: " + Menu[day];
     }
 }

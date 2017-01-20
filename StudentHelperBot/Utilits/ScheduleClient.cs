@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace lab8.Functional.ScheduleMMCS
+namespace StudentHelperBot.Utilits
 {
     public class MMCSClient
     {
@@ -79,7 +79,7 @@ namespace lab8.Functional.ScheduleMMCS
 
                 if (namePattern.IsMatch(name))
                     return await TeacherSch(t.id.ToString(), day);
-                
+
             }
 
             return null;

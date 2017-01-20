@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace lab8
+namespace StudentHelperBot.Utilits
 {
     public static class Untilits
     {
