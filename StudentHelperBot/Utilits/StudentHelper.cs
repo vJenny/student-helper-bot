@@ -11,14 +11,19 @@ namespace StudentHelperBot.Utilits
 {
     public class StudentHelper
     {
+        public enum Degrees { Undefined, Bachelor, Master }
+
         public string Name { get; set; }
         public int Group { get; set; }
         public int Course { get; set; }
+
+        public Degrees Degree { get; set; }
 
         public StudentHelper()
         {
             Name = "Аноним";
             Group = Course = 0;
+            Degree = Degrees.Undefined;
         }
 
         public string SetName(string name)
@@ -47,6 +52,13 @@ namespace StudentHelperBot.Utilits
             return  @"Неверный формат курса";
         }
 
+        public string SetDegree(Degrees degree)
+        {
+            Degree = degree;
+            return degree == Degrees.Bachelor ? 
+                @"Запомнил, Вы - бакалавр" : @"Запомнил, Вы - магистр";
+        }
+
         public string Hello() => $"Привет, {Name}";
 
         public string Help() => Resources.helpMessage;
@@ -70,7 +82,10 @@ namespace StudentHelperBot.Utilits
             var mmcsc = new MmcsClient();
             if (Course == 0 || Group == 0)
                 return @"Укажите курс и группу";
-            var res = await mmcsc.StudentSchedule(Course, Group, (int)DateTime.Now.DayOfWeek - 1);
+            if (Degree == Degrees.Undefined)
+                return @"Укажите, \bachelor вы или  \master";
+            var c = Degree == Degrees.Bachelor ? Course : Course + 5;
+            var res = await mmcsc.StudentSchedule(c, Group, (int)DateTime.Now.DayOfWeek - 1);
             var answ = new StringBuilder();
             res.ForEach(item => answ.Append(item));
             return answ.Length == 0 ? @"Сегодня выходной :)" : answ.ToString();

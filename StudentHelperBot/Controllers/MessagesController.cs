@@ -83,6 +83,10 @@ namespace StudentHelperBot.Controllers
                     return await sh.GetWeather();
                 case "/reset":
                     return sh.Reset();
+                case "/bachelor":
+                    return sh.SetDegree(StudentHelper.Degrees.Bachelor);
+                case "/master":
+                    return sh.SetDegree(StudentHelper.Degrees.Master);
                 default:
                     return "Неизвестная команда :(";
             }
