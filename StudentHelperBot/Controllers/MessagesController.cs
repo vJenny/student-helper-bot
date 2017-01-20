@@ -61,28 +61,28 @@ namespace StudentHelperBot.Controllers
                 return @"Команда должна начинаться с '/'";
             switch (message[0])
             {
-                case "/имя":
+                case "/name":
                     return sh.SetName(message.TakeName());
-                case "/курс":
+                case "/course":
                     return sh.SetCourse(message.TakeNextNumber());
-                case "/группа":
+                case "/group":
                     return sh.SetGroup(message.TakeNextNumber());
-                case "/преподаватель":
+                case "/teacher":
                     return await sh.GetLecturerSchedule(message.TakeName());
-                case "/справка":
+                case "/help":
                     return sh.Help();
-                case "/деканат":
+                case "/dean":
                     return sh.GetDeansOfficeSchedule();
-                case "/столовая":
+                case "/canteen":
                     return sh.GetDiningHallMenu();
-                case "/привет":
+                case "/hello":
                     return sh.Hello();
-                case "/расписание":
+                case "/schedule":
                     return await sh.GetSchedule();
-                case "/погода":
+                case "/weather":
                     return await sh.GetWeather();
-                case "/сброс":
-                    return await sh.Reset();
+                case "/reset":
+                    return sh.Reset();
                 default:
                     return "Неизвестная команда :(";
             }

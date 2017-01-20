@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Chronic;
+using StudentHelperBot.Properties;
 using StudentHelperBot.Utilits.OpenWeatherMap;
 
 namespace StudentHelperBot.Utilits
@@ -43,7 +45,7 @@ namespace StudentHelperBot.Utilits
 
         public string Hello() => $"Привет, {Name}";
 
-        public string Help() => "";//Resources.helpMsg;
+        public string Help() => Resources.helpMessage;
 
         public string GetDeansOfficeSchedule()
             => DeansOffice.WhatSchedule(DateTime.Now.DayOfWeek);
@@ -51,51 +53,56 @@ namespace StudentHelperBot.Utilits
         public string GetDiningHallMenu()
             => DiningHall.WhatToEat(DateTime.Now.DayOfWeek);
 
-        public async Task<string> Reset()
+        public string Reset()
         {
             Course = 0;
             Group = 0;
-            Name = "Аноним";
-            return "Настройки сброшены.";
+            Name = @"Аноним";
+            return @"Настройки сброшены.";
         }
+
         public async Task<string> GetSchedule()
         {
             var mmcsc = new MMCSClient();
             if (Course == 0 || Group == 0)
-                return "Укажите курс и группу";
+                return @"Укажите курс и группу";
             var res = await mmcsc.StudentSchedule(Course, Group, (int)DateTime.Now.DayOfWeek - 1);
             var answ = new StringBuilder();
             res.ForEach(item => answ.Append(item));
-            return answ.ToString();
+            return answ.Length == 0 ? @"Сегодня выходной :)" : answ.ToString();
         }
         public async Task<string> GetLecturerSchedule(string name)
         {
             var mmcsc = new MMCSClient();
             var res = await mmcsc.TeacherSchedule(name, (int)DateTime.Now.DayOfWeek - 1);
             if (res == null)
-                return $"Преподаватель не найден";
+                return @"Преподаватель не найден";
             if (res.Length == 0)
-                return $"Нет пар";
+                return @"У этого преподавателя сегодня нет пар";
             var answ = new StringBuilder();
             res.ForEach(item => answ.Append(item));
             return answ.ToString();
         }
         public async Task<string> GetWeather()
         {
-            /* var owm = new WeatherClient(Resources.wmKey);
+            var owm = new WeatherClient(Resources.wmKey);
             var res = await owm.Forecast(Resources.city);
             var weather = res[0];
             var sb = new StringBuilder();
             sb.Append(weather.Temp < -10
-                ? weather.Temp + Resources.coldMsg
-                : (DateTime.Now.DayOfWeek == DayOfWeek.Sunday ?
-                weather.Temp + Resources.warmMsg
-                : weather.Temp + Resources.studyMsg));
-            sb.Append(weather.Humidity <= 50
-                ? Resources.sunnyMsg
-                : (weather.Temp > 0 ? Resources.rainMsg : Resources.snowMsg));
-            return sb.Length == 0 ? Resources.errorMsg : sb.ToString(); */
-            return "";
+                ? @"На улице очень холодно, лучше оставайтесь дома :)."
+                : weather.Temp < 0
+                ? @"Лёгкий морозец. Одевайтесь теплее."
+                : weather.Temp < 20
+                ? @"Прохладная погода."
+                : @"На улице довольно жарко. Ура, лето!");
+            sb.Append(weather.Humidity <= 70
+                ? @" Осадков не ожидается."
+                : weather.Temp < 0
+                    ? @" Возможен снег. Ура, можно играть в снежки!"
+                    : @" Возможен дождь. Захватите зонтик.");
+            sb.Append($" Температура воздуха - {(int)weather.Temp}°C.");
+            return sb.Length == 0 ? @"Что-то пошло не так :(" : sb.ToString(); 
         }
     }
 }
