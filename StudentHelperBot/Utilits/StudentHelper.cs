@@ -37,7 +37,7 @@ namespace StudentHelperBot.Utilits
             int g;
             var f = int.TryParse(group, out g);
             Group = g;
-            if (f && g > 0 && g < 9)
+            if (f && g > 0 && g <= 9)
                 return @"Запомнил, группа " + Group;
             return @"Неверный формат группы";
         }
