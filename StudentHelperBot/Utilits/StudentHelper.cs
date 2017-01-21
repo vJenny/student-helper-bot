@@ -59,7 +59,10 @@ namespace StudentHelperBot.Utilits
                 @"Запомнил, Вы - бакалавр" : @"Запомнил, Вы - магистр";
         }
 
-        public string Hello() => $"Привет, {Name}";
+        public string Hello(string nickname) => 
+            Name != "Аноним" 
+            ? $"Привет, {Name}" 
+            : $"Привет, {(nickname != null && nickname.Trim() != "" ? nickname : "Аноним")}";
 
         public string Help() => Resources.helpMessage;
 

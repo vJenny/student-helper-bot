@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -12,8 +11,6 @@ namespace StudentHelperBot.Controllers
     [BotAuthentication]
     public class MessagesController : ApiController
     {
-        private delegate Task<string> BotTask();
-
         /// <summary>
         /// POST: api/Messages
         /// Receive a message from a user and reply to it
@@ -32,7 +29,7 @@ namespace StudentHelperBot.Controllers
 
                     var user = userData.GetProperty<StudentHelper>(profile) ?? new StudentHelper();
 
-                    var text = await Reply(activity.Text, user);
+                    var text = await Reply(activity.Text, user, activity.Conversation.Name);
                     var reply = activity.CreateReply(text);
                     userData.SetProperty(profile, user);
                     await state.BotState.SetUserDataAsync(activity.ChannelId, activity.From.Id, userData);
@@ -52,7 +49,7 @@ namespace StudentHelperBot.Controllers
             }
         }
 
-        public async Task<string> Reply(string msg, StudentHelper sh)
+        public async Task<string> Reply(string msg, StudentHelper sh, string user)
         {
             var message = msg.ToLower().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             if (message.Length == 0)
@@ -76,7 +73,7 @@ namespace StudentHelperBot.Controllers
                 case "/canteen":
                     return sh.GetDiningHallMenu();
                 case "/hello":
-                    return sh.Hello();
+                    return sh.Hello(user);
                 case "/schedule":
                     return await sh.GetSchedule();
                 case "/weather":
