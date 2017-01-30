@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace StudentHelperBot.Utilits
 {
@@ -14,7 +15,7 @@ namespace StudentHelperBot.Utilits
         public async Task<LessonRecord[]> StudentSchedule(int course, int group, int day)
         {
             var groups = await _cli.GetStringAsync($"http://users.mmcs.sfedu.ru:3000/APIv0/group/list/{course}");
-            dynamic groupsData = Newtonsoft.Json.JsonConvert.DeserializeObject(groups);
+            dynamic groupsData = JsonConvert.DeserializeObject(groups);
 
             var gid = "";
             foreach (var g in groupsData)
@@ -28,9 +29,10 @@ namespace StudentHelperBot.Utilits
 
         public async Task<LessonWeek> CurrentWeek()
         {
-            var week = await _cli.GetStringAsync("http://users.mmcs.sfedu.ru:3000/APIv0/time/week");
-            return week.Length != 0 
-                ? (week[week.Length - 2] == '0' ? LessonWeek.Upper : LessonWeek.Lower) 
+            var answer = await _cli.GetStringAsync("http://users.mmcs.sfedu.ru:3000/APIv0/time/week");
+            dynamic week = JsonConvert.DeserializeObject(answer);
+            return week != null 
+                ? week.type == '0' ? LessonWeek.Upper : LessonWeek.Lower
                 : LessonWeek.Full;
         }
 
@@ -39,7 +41,7 @@ namespace StudentHelperBot.Utilits
             var res = await _cli.GetStringAsync(request);
             var f = new List<LessonRecord>();
 
-            dynamic x = Newtonsoft.Json.JsonConvert.DeserializeObject(res);
+            dynamic x = JsonConvert.DeserializeObject(res);
             var lessons = x.lessons;
             var curricula = x.curricula;
 
@@ -63,24 +65,20 @@ namespace StudentHelperBot.Utilits
             var curWeek = await CurrentWeek();
             return f
                 .Where(z => z.Time.Position == day && (z.Time.Week == curWeek || z.Time.Week == LessonWeek.Full))
-        .
-
-        OrderBy(z => z.Time.Start)
+                .OrderBy(z => z.Time.Start)
                 .ToArray();
         }
 
         public async Task<LessonRecord[]> TeacherSchedule(string namePattern, int day)
             => await TeacherSchedule(new Regex(namePattern, RegexOptions.IgnoreCase), day);
 
-        private async Task<LessonRecord[]> TeacherSch(string id, int day)
-        {
-            return await GetLessons($"http://users.mmcs.sfedu.ru:3000/APIv1/schedule/teacher/{id}", day);
-        }
+        private async Task<LessonRecord[]> TeacherSch(string id, int day) 
+            => await GetLessons($"http://users.mmcs.sfedu.ru:3000/APIv1/schedule/teacher/{id}", day);
 
         public async Task<LessonRecord[]> TeacherSchedule(Regex namePattern, int day)
         {
             var data = await _cli.GetStringAsync(@"http://users.mmcs.sfedu.ru:3000/APIv0/teacher/list");
-            dynamic teachers = Newtonsoft.Json.JsonConvert.DeserializeObject(data);
+            dynamic teachers = JsonConvert.DeserializeObject(data);
 
             foreach (var t in teachers)
             {
@@ -130,7 +128,7 @@ namespace StudentHelperBot.Utilits
         public TimeSpan Start { get; }
         public TimeSpan End { get; }
 
-        public override string ToString() => $"{Start.Hours}:{Start.Minutes} - {End.Hours}:{End.Minutes}"; 
+        public override string ToString() => $"{Start:d} - {End:d}"; 
     }
 
     public struct LessonRecord

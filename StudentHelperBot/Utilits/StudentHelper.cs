@@ -86,11 +86,12 @@ namespace StudentHelperBot.Utilits
             if (Course == 0 || Group == 0)
                 return @"Укажите курс и группу";
             if (Degree == Degrees.Undefined)
-                return @"Укажите, \bachelor вы или  \master";
+                return @"Укажите, /bachelor вы или  /master";
             var c = Degree == Degrees.Bachelor ? Course : Course + 5;
             var res = await mmcsc.StudentSchedule(c, Group, (int)DateTime.Now.DayOfWeek - 1);
             var answ = new StringBuilder();
             res.ForEach(item => answ.Append(item));
+            answ.Append("");
             return answ.Length == 0 ? @"Сегодня выходной :)" : answ.ToString();
         }
         public async Task<string> GetLecturerSchedule(string name)
