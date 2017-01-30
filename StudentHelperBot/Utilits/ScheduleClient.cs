@@ -128,7 +128,7 @@ namespace StudentHelperBot.Utilits
         public TimeSpan Start { get; }
         public TimeSpan End { get; }
 
-        public override string ToString() => $"{Start:d} - {End:d}"; 
+        public override string ToString() => $"{Start.Hours:D2}:{Start.Minutes:D2} - {End.Hours:D2}:{End.Minutes:D2}"; 
     }
 
     public struct LessonRecord
