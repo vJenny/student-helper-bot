@@ -64,7 +64,7 @@ namespace StudentHelperBot.Controllers
                     return sh.SetCourse(message.TakeNextNumber());
                 case "/group":
                     return sh.SetGroup(message.TakeNextNumber());
-                case "/teacher":
+                case "/lecturer":
                     return await sh.GetLecturerSchedule(message.TakeName());
                 case "/help":
                     return sh.Help();
