@@ -84,6 +84,8 @@ namespace StudentHelperBot.Controllers
                     return sh.SetDegree(StudentHelper.Degrees.Bachelor);
                 case "/master":
                     return sh.SetDegree(StudentHelper.Degrees.Master);
+                case "/start":
+                    return sh.Start();
                 default:
                     return "Неизвестная команда :(";
             }

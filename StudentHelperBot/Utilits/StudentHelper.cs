@@ -59,6 +59,8 @@ namespace StudentHelperBot.Utilits
                 @"Запомнил, Вы - бакалавр" : @"Запомнил, Вы - магистр";
         }
 
+        public string Start() => "Начнем!";
+
         public string Hello(string nickname) => 
             Name != "Аноним" 
             ? $"Привет, {Name}" 
